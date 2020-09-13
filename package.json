@@ -1,0 +1,29 @@
+{
+  "name": "vt-parcels",
+  "version": "1.0.0",
+  "description": "parcels vector tiles data in Rwanda",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create": "node index.js",
+    "extract": "node extract.js",
+    "deploy": "gh-pages -d public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WASAC/vt-parcels.git"
+  },
+  "author": "Jin IGARASHI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WASAC/vt-parcels/issues"
+  },
+  "homepage": "https://github.com/WASAC/vt-parcels#readme",
+  "dependencies": {
+    "@watergis/mbtiles2pbf": "^0.2.1",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "gh-pages": "^3.1.0",
+    "mvt-generator": "git+https://github.com/watergis/mvt-generator.git"
+  }
+}
