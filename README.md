@@ -24,7 +24,7 @@ Copyright (c) 2020 Water and Sanitation Corporation, Ltd.
 
 Vector tile URL
 ```
-https://vt-parcels.netlify.app/tiles/{z}/{x}/{y}.pbf
+https://vt-parcels.netlify.app/tiles/{z}/{x}/{y}.mvt
 ```
 
 ## Usage
