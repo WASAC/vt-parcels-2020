@@ -24,7 +24,7 @@ Copyright (c) 2020 Rwanda Land Management and Use Authority(RLMUA)
 
 Vector tile URL
 ```
-https://vt-parcels.netlify.app/tiles/{z}/{x}/{y}.mvt
+https://vt-parcels.netlify.app/tiles/{z}/{x}/{y}.pbf
 ```
 
 ## Usage
