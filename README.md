@@ -19,7 +19,7 @@ License][cc-by].
 
 Please put the following attribution when you use this vector tiles of land parcels.
 ```
-Copyright (c) 2020 Water and Sanitation Corporation, Ltd.
+Copyright (c) 2020 Rwanda Land Management and Use Authority(RLMUA)
 ```
 
 Vector tile URL
