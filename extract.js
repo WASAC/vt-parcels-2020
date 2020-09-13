@@ -9,7 +9,7 @@ const extract = async() =>{
         console.log(`${config.mbtiles} does not exists. Skipped!`);
         return;
     }
-    const mb2pbf = new Mbtiles2Pbf(config.mbtiles, config.ghpages.tiles, FileExtension.MVT);
+    const mb2pbf = new Mbtiles2Pbf(config.mbtiles, config.ghpages.tiles, FileExtension.PBF);
     const no_tiles = await mb2pbf.run();
     console.log(`${no_tiles} tiles were extracted under ${config.ghpages.tiles}`);
     console.timeEnd('mbtiles2pbf');
