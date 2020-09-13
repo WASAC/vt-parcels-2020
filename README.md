@@ -1,5 +1,6 @@
 # vt-parcels
 ![GitHub](https://img.shields.io/github/license/wasac/vt-parcels)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/58b0d7d0-f9ac-4bf4-b28a-2ec96843db8e/deploy-status)](https://app.netlify.com/sites/kento75blog/deploys)
 
 parcels vector tiles data in Rwanda
 
@@ -19,6 +20,14 @@ npm run extract
 - deploy to gh-pages
 ```
 npm run deploy
+```
+
+- deploy to netlify
+```
+npm install -g netlify-cli
+netlify -v
+netlify login
+netlify deploy
 ```
 
 ## Time to generate vector tiles
