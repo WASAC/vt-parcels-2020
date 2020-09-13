@@ -1,5 +1,4 @@
 # vt-parcels
-![](https://github.com/wasac/vt-parcels/workflows/Node.js%20CI/badge.svg)
 ![GitHub](https://img.shields.io/github/license/wasac/vt-parcels)
 
 parcels vector tiles data in Rwanda
