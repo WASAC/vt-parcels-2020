@@ -1,7 +1,7 @@
 {
-  "name": "vt-parcels",
+  "name": "vt-parcels-2020",
   "version": "1.0.0",
-  "description": "parcels vector tiles data in Rwanda",
+  "description": "parcels vector tiles data as of 21 July 2020 in Rwanda",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WASAC/vt-parcels.git"
+    "url": "git+https://github.com/WASAC/vt-parcels-2020.git"
   },
   "author": "Jin IGARASHI",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/WASAC/vt-parcels/issues"
+    "url": "https://github.com/WASAC/vt-parcels-2020/issues"
   },
-  "homepage": "https://github.com/WASAC/vt-parcels#readme",
+  "homepage": "https://github.com/WASAC/vt-parcels-2020#readme",
   "dependencies": {
     "@watergis/mbtiles2pbf": "^0.2.1",
     "dotenv": "^8.2.0",

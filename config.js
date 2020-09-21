@@ -7,19 +7,19 @@ module.exports ={
     user:process.env.db_user,
     password:process.env.db_password,
     host:process.env.db_host,
-    post:process.env.db_port,
-    database:'rwss_assets',
+    port:process.env.db_port,
+    database:'rw_parcels',
   },
   format:{
     type: 'mbtiles',
     output: __dirname + '/data/parcels.mbtiles',
     metadata: {
       "name": "rwanda-parcels",
-      "description":"parcels data in vector tiles",
+      "description":"parcels data in vector tiles as of 21 July 2020",
       "format":"pbf",
       "version": 1,
-      "minzoom": 15,
-      "maxzoom": 15,
+      "minzoom": 16,
+      "maxzoom": 16,
       "center": "30.060,-1.945, 15",
       "bounds": "28.861730820621, -2.84023010213741, 30.8997466415943, -1.04716670707785",
       "type": "overlay",
@@ -34,23 +34,62 @@ module.exports ={
     {
       name: 'parcels',
       buffer: 2,
-      minzoom: 15,
-      maxzoom:15,
+      minzoom: 16,
+      maxzoom:16,
       query:`
-      WITH final as(
+      WITH union_parcels as(
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM eastern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM kigali_city_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM northern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM southern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM western_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+      )
+      ,final as(
         SELECT
         'Feature' AS type,
         ST_Intersection(ST_Buffer(x.geom, 0.0000001), ST_Buffer(${BBOX}, 0.0000001)) AS geom,
         row_to_json((
           SELECT p FROM (
           SELECT
-            x.fid as id,
-            x."Parcel_ID" parcel_no
+            x.objectid as id,
+            x.parcel_num parcel_no
           ) AS p
         )) AS properties
-        FROM parcels x
-        WHERE NOT ST_IsEmpty(x.geom)
-        AND x.geom && ST_Buffer(${BBOX}, 0.0000001)
+        FROM union_parcels x
       )
       SELECT row_to_json(featurecollection) AS json FROM (
         SELECT
@@ -70,23 +109,63 @@ module.exports ={
     {
       name: 'parcels_annotation',
       buffer: 0,
-      minzoom: 15,
-      maxzoom:15,
+      minzoom: 16,
+      maxzoom:16,
       query:`
-      WITH final as(
+      WITH union_parcels as(
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM eastern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM kigali_city_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM northern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM southern_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+        UNION ALL
+        SELECT
+          objectid,
+          parcel_num,
+          geom
+        FROM western_province
+        WHERE NOT ST_IsEmpty(geom)
+        AND geom && ST_Buffer(${BBOX}, 0.0000001)
+      )
+      ,final as(
         SELECT
         'Feature' AS type,
-        ST_Intersection(ST_Buffer(x.geom, 0.0000001), ST_Buffer(${BBOX}, 0.0000001)) AS geom,
+        ST_Intersection(ST_CENTROID(x.geom), ST_Buffer(${BBOX}, 0.0000001)) AS geom,
         row_to_json((
           SELECT p FROM (
           SELECT
-            x.fid as id,
-            x."Parcel_ID" parcel_no
+          x.objectid as id,
+          x.parcel_num parcel_no
           ) AS p
         )) AS properties
-        FROM parcels x
+        FROM union_parcels x
         WHERE NOT ST_IsEmpty(x.geom)
-        AND x.geom && ST_Buffer(${BBOX}, 0.0000001)
       )
       SELECT row_to_json(featurecollection) AS json FROM (
         SELECT
@@ -95,10 +174,10 @@ module.exports ={
         FROM (
           SELECT
           x.type,
-          ST_AsGeoJSON(ST_CENTROID(x.geom))::json AS geometry,
+          ST_AsGeoJSON(x.geom)::json AS geometry,
           x.properties
           FROM final x
-          WHERE NOT ST_IsEmpty(x.geom)
+          WHERE x.geom IS NOT NULL AND (NOT ST_IsEmpty(x.geom))
         ) AS feature
       ) AS featurecollection
       `

@@ -1,8 +1,8 @@
 # vt-parcels
-![GitHub](https://img.shields.io/github/license/wasac/vt-parcels)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/58b0d7d0-f9ac-4bf4-b28a-2ec96843db8e/deploy-status)](https://app.netlify.com/sites/vt-parcels/deploys)
+![GitHub](https://img.shields.io/github/license/wasac/vt-parcels-2020)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/58b0d7d0-f9ac-4bf4-b28a-2ec96843db8e/deploy-status)](https://app.netlify.com/sites/vt-parcels-2020/deploys)
 
-parcels vector tiles data in Rwanda
+parcels vector tiles data as of 21 July 2020 in Rwanda
 
 ## License of Vector Tiles Data
 
@@ -24,7 +24,49 @@ Copyright (c) 2020 Rwanda Land Management and Use Authority(RLMUA)
 
 Vector tile URL
 ```
-https://vt-parcels.netlify.app/tiles/{z}/{x}/{y}.pbf
+https://vt-parcels-2020.netlify.app/tiles/{z}/{x}/{y}.pbf
+```
+
+## Preparation
+
+### create database
+
+```
+psql -h localhost -p 25432 -U docker -d postgres
+create database rw_parcels;
+\c rw_parcels;
+create extension postgis;
+select postgis_version();
+\q
+```
+
+### transform CRS to EPSG:4326
+Use QGIS to transform CRS to 4326.
+Shapefiles can be created under wgs84 folder.
+
+### import Shapefiles
+Use QGIS to import Shapefiles, or import by `shp2pgsql` command
+```
+cd PARCELS_21_07_2020/wgs84
+shp2pgsql -I -s 4326 eastern_province.shp eastern_province.shp | psql -h localhost -p 25432 -U docker -d rw_parcels
+shp2pgsql -I -s 4326 kigali_city_province.shp kigali_city_province | psql -h localhost -p 25432 -U docker -d rw_parcels
+shp2pgsql -I -s 4326 northern_province.shp northern_province | psql -h localhost -p 25432 -U docker -d rw_parcels
+shp2pgsql -I -s 4326 southern_province.shp southern_province | psql -h localhost -p 25432 -U docker -d rw_parcels
+shp2pgsql -I -s 4326 western_province.shp western_province | psql -h localhost -p 25432 -U docker -d rw_parcels
+```
+
+### create spatial index
+```
+CREATE INDEX idx_eastern_province_geometry ON public.eastern_province USING gist(geom);
+CREATE INDEX idx_kigali_city_province_geometry ON public.kigali_city_province USING gist(geom);
+CREATE INDEX idx_northern_province_geometry ON public.northern_province USING gist(geom);
+CREATE INDEX idx_southern_province_geometry ON public.southern_province USING gist(geom);
+CREATE INDEX idx_western_province_geometry ON public.western_province USING gist(geom);
+```
+
+### analyze
+```
+ANALYZE;
 ```
 
 ## Usage
@@ -54,7 +96,7 @@ netlify deploy
 ```
 
 ## Time to generate vector tiles
-- 13th September 2020
-  - total number of tiles: 30504
-  - actual number of tiles generated: 15200
-  - 12832914.164ms=3.56469837888889hours
+- 21st September 2020
+  - total number of tiles: 122016
+  - actual number of tiles generated: 59943
+  - 16867338.345ms=4.6853717625hours
