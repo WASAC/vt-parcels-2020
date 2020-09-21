@@ -1,6 +1,6 @@
 # vt-parcels
 ![GitHub](https://img.shields.io/github/license/wasac/vt-parcels-2020)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/58b0d7d0-f9ac-4bf4-b28a-2ec96843db8e/deploy-status)](https://app.netlify.com/sites/vt-parcels-2020/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/efe4fdd0-451e-4e32-b845-f8871cab8559/deploy-status)](https://app.netlify.com/sites/vt-parcels-2020/deploys)
 
 parcels vector tiles data as of 21 July 2020 in Rwanda
 
